@@ -17,7 +17,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 ### Update
 
-Pull changes to your repos:
+Pull changes:
 
 ```bash
 git remote add template git@github.com:babie/self.git
@@ -31,7 +31,7 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ### Setup
 
-First, clone.
+First, clone:
 
 ```bash
 git clone git@github.com:USERNAME/REPONAME.git
@@ -39,11 +39,15 @@ git clone git@github.com:USERNAME/REPONAME.git
 
 Second, [pull changes](#update).
 
+Third, install dependencies:
+
+```bash
+yarn install
+```
+
 And run the development server:
 
 ```bash
-npm run dev
-# or
 yarn dev
 ```
 
