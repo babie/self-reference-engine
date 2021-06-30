@@ -1,6 +1,6 @@
-# Self
+# Self Reference Engine
 
-Self is a Self Reference Engine for your site - blog, cms and so on.
+Self Reference Engine is a site generator for individual user.
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
