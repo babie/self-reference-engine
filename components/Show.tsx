@@ -1,7 +1,10 @@
 import { GetStaticProps } from 'next'
 
-const Show = () => {
-  return <div>Show</div>
+type Props = {
+  path: string[]
+}
+const Show = ({ path }: Props) => {
+  return <div>Show - {path.join('/')}</div>
 }
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
