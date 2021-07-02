@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import { Tree, Show, New, Edit } from '../components'
 
-const getComponent = (cmd: string | string[] | undefined): JSX.Element => {
+const selectComponent = (cmd: string | string[] | undefined): JSX.Element => {
   if (cmd && typeof cmd !== 'string') {
     switch (cmd[0]) {
       case 'tree:':
@@ -21,7 +21,7 @@ const SwitchComponent = () => {
   const router = useRouter()
   const { cmd } = router.query
 
-  return getComponent(cmd)
+  return selectComponent(cmd)
 }
 
 export default SwitchComponent
