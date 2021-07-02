@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router'
+import { Tree, Show, New, Edit } from '../components'
 
 type Route = {
   action: 'tree' | 'show' | 'new' | 'edit'
@@ -28,13 +29,13 @@ const RouteSwitch = () => {
   const route = getRoute(path)
   switch (route.action) {
     case 'tree':
-      return <p>tree</p>
+      return <Tree />
     case 'new':
-      return <p>new</p>
+      return <New />
     case 'edit':
-      return <p>edit</p>
+      return <Edit />
   }
-  return <p>show</p>
+  return <Show />
 }
 
 export default RouteSwitch
