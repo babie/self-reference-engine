@@ -4,13 +4,13 @@ import fs from 'fs'
 import npath from 'path'
 import fg from 'fast-glob'
 import { micromark } from 'micromark'
-import gmatter from 'gray-matter'
+import matter from 'gray-matter'
 
 const getMarkdown = async (fullpath: string): Promise<Props> => {
   const mdbuf = fs.readFileSync(fullpath, { encoding: 'utf-8' })
-  const matter = gmatter(mdbuf)
-  const meta = matter.data
-  const content = micromark(matter.content)
+  const mdobj = matter(mdbuf)
+  const meta = mdobj.data
+  const content = micromark(mdobj.content)
   return { meta, content }
 }
 
