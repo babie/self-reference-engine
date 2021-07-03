@@ -11,6 +11,7 @@ const getMarkdown = async (fullpath: string): Promise<Props> => {
   const mdobj = matter(mdbuf)
   const meta = mdobj.data
   const content = micromark(mdobj.content)
+
   return { meta, content }
 }
 
@@ -45,13 +46,8 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
       'public',
       `${params.path.join('/')}.md`
     )
-    const { meta, content } = await getMarkdown(fullpath)
-    return {
-      props: {
-        meta,
-        content,
-      },
-    }
+    const props = await getMarkdown(fullpath)
+    return { props }
   }
   return { notFound: true }
 }
