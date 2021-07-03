@@ -4,13 +4,14 @@ import fs from 'fs'
 import npath from 'path'
 import fg from 'fast-glob'
 import { micromark } from 'micromark'
+import gmatter from 'gray-matter'
 
-const getContent = async (fullpath: string): Promise<Props> => {
+const getMarkdown = async (fullpath: string): Promise<Props> => {
   const mdbuf = fs.readFileSync(fullpath, { encoding: 'utf-8' })
-  // TODO: markdown to html
-  const title = 'Pseudo Title'
-  const html = micromark(mdbuf)
-  return { title, html }
+  const matter = gmatter(mdbuf)
+  const meta = matter.data
+  const content = micromark(matter.content)
+  return { meta, content }
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
@@ -32,8 +33,10 @@ export const getStaticPaths: GetStaticPaths = async () => {
 }
 
 type Props = {
-  title: string
-  html: string
+  meta: {
+    [key: string]: any
+  }
+  content: string
 }
 export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
   if (params && params.path && typeof params.path !== 'string') {
@@ -42,25 +45,25 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
       'public',
       `${params.path.join('/')}.md`
     )
-    const { title, html } = await getContent(fullpath)
+    const { meta, content } = await getMarkdown(fullpath)
     return {
       props: {
-        title,
-        html,
+        meta,
+        content,
       },
     }
   }
   return { notFound: true }
 }
 
-const Show: React.FC<Props> = ({ title, html }) => {
+const Show: React.FC<Props> = ({ meta, content }) => {
   return (
     <>
       <Head>
-        <title>{title}</title>
+        <title>{meta.title}</title>
       </Head>
       <main>
-        <article dangerouslySetInnerHTML={{ __html: html }} />
+        <article dangerouslySetInnerHTML={{ __html: content }} />
       </main>
     </>
   )
