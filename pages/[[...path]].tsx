@@ -3,13 +3,15 @@ import Head from 'next/head'
 import fs from 'fs'
 import npath from 'path'
 import fg from 'fast-glob'
+import remark from 'remark'
+import html from 'remark-html'
 
 const getContent = async (fullpath: string): Promise<Props> => {
-  const md = fs.readFileSync(fullpath, { encoding: 'utf-8' })
+  const mdbuf = fs.readFileSync(fullpath, { encoding: 'utf-8' })
   // TODO: markdown to html
   const title = 'Pseudo Title'
-  const html = md
-  return { title, html }
+  const htmlbuf = remark().use(html).processSync(mdbuf).toString()
+  return { title, html: htmlbuf }
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
@@ -59,13 +61,7 @@ const Show: React.FC<Props> = ({ title, html }) => {
         <title>{title}</title>
       </Head>
       <main>
-        <article>
-          <h1>{title}</h1>
-          <div>{html}</div>
-          {/*
-            <div dangerouslySetInnerHTML={{ __html: html }} />
-          */}
-        </article>
+        <article dangerouslySetInnerHTML={{ __html: html }} />
       </main>
     </>
   )
