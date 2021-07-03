@@ -3,15 +3,14 @@ import Head from 'next/head'
 import fs from 'fs'
 import npath from 'path'
 import fg from 'fast-glob'
-import remark from 'remark'
-import html from 'remark-html'
+import { micromark } from 'micromark'
 
 const getContent = async (fullpath: string): Promise<Props> => {
   const mdbuf = fs.readFileSync(fullpath, { encoding: 'utf-8' })
   // TODO: markdown to html
   const title = 'Pseudo Title'
-  const htmlbuf = remark().use(html).processSync(mdbuf).toString()
-  return { title, html: htmlbuf }
+  const html = micromark(mdbuf)
+  return { title, html }
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
