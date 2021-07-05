@@ -1,19 +1,8 @@
 import type { GetStaticPaths, GetStaticProps } from 'next'
 import Head from 'next/head'
-import fs from 'fs'
 import npath from 'path'
 import fg from 'fast-glob'
-import { micromark } from 'micromark'
-import matter from 'gray-matter'
-
-const getMarkdown = async (fullpath: string): Promise<Props> => {
-  const mdbuf = fs.readFileSync(fullpath, { encoding: 'utf-8' })
-  const mdobj = matter(mdbuf)
-  const meta = mdobj.data
-  const content = micromark(mdobj.content)
-
-  return { meta, content }
-}
+import { getMarkdown } from '../lib/markdown'
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const paths = fg
@@ -37,14 +26,15 @@ type Props = {
   meta: {
     [key: string]: any
   }
-  content: string
+  html: string
 }
+
 export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
   if (params && params.path && typeof params.path !== 'string') {
     const fullpath = npath.join(
       process.cwd(),
       'public',
-      `${params.path.join('/')}.md`
+      `${npath.join(...params.path)}.md`
     )
     const props = await getMarkdown(fullpath)
     return { props }
@@ -52,14 +42,14 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
   return { notFound: true }
 }
 
-const Show: React.FC<Props> = ({ meta, content }) => {
+const Show: React.FC<Props> = ({ meta, html }) => {
   return (
     <>
       <Head>
         <title>{meta.title}</title>
       </Head>
       <main>
-        <article dangerouslySetInnerHTML={{ __html: content }} />
+        <article dangerouslySetInnerHTML={{ __html: html }} />
       </main>
     </>
   )

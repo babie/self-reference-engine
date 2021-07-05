@@ -3,6 +3,7 @@ import Link from 'next/link'
 type BreadcrumbsProps = {
   path: string[]
 }
+
 const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ path }) => {
   return (
     <>
