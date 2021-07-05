@@ -5,6 +5,8 @@ type BreadcrumbsProps = {
 }
 
 const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ path }) => {
+  // TODO: Array.prototype.reduce()を使う
+  // <Link>がhrefをencodeURIComponent()してくれている
   return (
     <>
       {path.map((v, i) => {
