@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@isomorphic-git/cors-proxy": "^2.7.0",
     "fast-glob": "^3.2.6",
     "gray-matter": "^4.0.3",
     "micromark": "^3.0.0",
