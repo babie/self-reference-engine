@@ -10,11 +10,9 @@ const New = () => {
     const spath = sanitize(path)
 
     return (
-      <>
-        <main>
-          <Breadcrumbs path={spath.slice(0, path.length - 1)} />
-        </main>
-      </>
+      <main>
+        <Breadcrumbs path={spath.slice(0, path.length - 1)} />
+      </main>
     )
   }
   return <div>Error</div>
