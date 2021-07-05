@@ -1,25 +1,32 @@
 import Link from 'next/link'
+import React from 'react'
 
 type BreadcrumbsProps = {
   path: string[]
 }
 
+type Acc = {
+  href: string
+  links: (string | JSX.Element)[]
+}
 const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ path }) => {
-  // TODO: Array.prototype.reduce()を使う
   // <Link>がhrefをencodeURIComponent()してくれている
-  return (
-    <>
-      {path.map((v, i) => {
-        const href = `/tree:/${[...path.slice(0, i), v].join('/')}`
-        return [
-          '/',
-          <Link key={href} href={href}>
-            {v}
-          </Link>,
-        ]
-      })}
-    </>
+  const { links } = path.reduce<Acc>(
+    (acc, val) => {
+      const href = `${acc.href}/${val}`
+      const link = (
+        <Link key={`${href}`} href={href}>
+          {val}
+        </Link>
+      )
+      return {
+        href,
+        links: [...acc.links, ' / ', link],
+      }
+    },
+    { href: '/tree:', links: [] }
   )
+  return <>{links}</>
 }
 
 export default Breadcrumbs
