@@ -2,17 +2,25 @@ import type { GetStaticPaths, GetStaticProps } from 'next'
 import Head from 'next/head'
 import npath from 'path'
 import fg from 'fast-glob'
-import { getMarkdown } from '../lib/markdown'
+import { getFullpath, getFile, getIndex, isFile, isDir } from '../lib/markdown'
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const paths = fg
-    .sync('**/*.md', {
-      cwd: npath.join(process.cwd(), 'public'),
-      onlyFiles: true,
+  const cwd = npath.join(process.cwd(), 'public')
+  const files = await fg('**/*.md', { cwd, onlyFiles: true })
+  const paths = files
+    .map((file) => {
+      return file
+        .replace(/\.md$/, '')
+        .split(npath.sep)
+        .reduce<string[][]>(
+          (acc, p) => (acc[0] ? [[...acc[0], p], ...acc] : [[p]]),
+          []
+        )
     })
-    .map((file) => ({
+    .flat()
+    .map((path) => ({
       params: {
-        path: file.replace(/\.md$/, '').split('/'),
+        path,
       },
     }))
 
@@ -31,13 +39,17 @@ type Props = {
 
 export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
   if (params && params.path && typeof params.path !== 'string') {
-    const fullpath = npath.join(
-      process.cwd(),
-      'public',
-      `${npath.join(...params.path)}.md`
-    )
-    const props = await getMarkdown(fullpath)
-    return { props }
+    const path = params.path.join(npath.sep)
+    let props: Props
+    if (isDir(path)) {
+      // dir: show index
+      props = await getIndex(path)
+      return { props }
+    } else if (isFile(path + '.md')) {
+      // file: show markdown
+      props = await getFile(path + '.md')
+      return { props }
+    }
   }
   return { notFound: true }
 }
