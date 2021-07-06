@@ -39,10 +39,17 @@ export type GetIndex = (
 
 export const getIndex: GetIndex = async (dirpath) => {
   const fullpath = getFullpath(dirpath)
-  const dfs = fg('*', { cwd: fullpath })
-  const list = (await dfs).map(
-    (df) => `- [${df}](${dirpath}/${df.replace(/\.md$/, '')})\n`
+  const dirs = fg('*', { cwd: fullpath, onlyDirectories: true })
+  const files = fg('*', { cwd: fullpath, onlyFiles: true })
+  // TODO: アイコンフォント埋め込み
+  const dirlist = (await dirs).map((dir) => `- [${dir}](${dirpath}/${dir})`)
+  // TODO: meta.title,datetime 読み込み
+  const filelist = (await files).map(
+    (file) => `- [${file}](${dirpath}/${file.replace(/\.md$/, '')})`
   )
+
+  const parentdir = `- [..](${dirpath}/..)`
+  const list = [parentdir, ...dirlist, ...filelist].join(`\n`)
 
   const mdbuf = `---
 title: Index of ${dirpath}

@@ -6,23 +6,16 @@ import { getFullpath, getFile, getIndex, isFile, isDir } from '../lib/markdown'
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const cwd = npath.join(process.cwd(), 'public')
-  const files = await fg('**/*.md', { cwd, onlyFiles: true })
-  const paths = files
-    .map((file) => {
-      return file
-        .replace(/\.md$/, '')
-        .split(npath.sep)
-        .reduce<string[][]>(
-          (acc, p) => (acc[0] ? [[...acc[0], p], ...acc] : [[p]]),
-          []
-        )
-    })
-    .flat()
-    .map((path) => ({
+  const dirs = fg('**/*', { cwd, onlyDirectories: true })
+  const files = fg('**/*.md', { cwd, onlyFiles: true })
+  const paths = [...(await dirs), ...(await files)].map((fd) => {
+    const path = fd.replace(/\.md$/, '').split(npath.sep)
+    return {
       params: {
         path,
       },
-    }))
+    }
+  })
 
   return {
     paths,
@@ -39,7 +32,7 @@ type Props = {
 
 export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
   if (params && params.path && typeof params.path !== 'string') {
-    const path = params.path.join(npath.sep)
+    const path = '/' + params.path.join(npath.sep)
     let props: Props
     if (isDir(path)) {
       // dir: show index
