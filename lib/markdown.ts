@@ -51,6 +51,7 @@ export const getIndex: GetIndex = async (dirpath) => {
   const parentdir = `- [..](${dirpath}/..)`
   const list = [parentdir, ...dirlist, ...filelist].join(`\n`)
 
+  // TODO: markdownやめてjsxで描く
   const mdbuf = `---
 title: Index of ${dirpath}
 ---

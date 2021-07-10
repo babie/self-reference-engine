@@ -34,6 +34,7 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
   if (params && params.path && typeof params.path !== 'string') {
     const path = '/' + params.path.join(npath.sep)
     let props: Props
+    // TODO: pathの末尾が`*.html`だったらマークダウン表示、違ったらインデックス表示
     if (isDir(path)) {
       // dir: show index
       props = await getIndex(path)
