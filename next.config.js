@@ -14,8 +14,12 @@ module.exports = withTM({
   async rewrites() {
     return [
       {
+        source: '/:path*.html',
+        destination: '/__self__/show/:path*.html',
+      },
+      {
         source: '/:path*',
-        destination: '/__self__/show/:path*',
+        destination: '/__self__/index/:path*',
       },
     ]
   },

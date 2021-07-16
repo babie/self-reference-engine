@@ -45,7 +45,7 @@ export const getIndex: GetIndex = async (dirpath) => {
   const dirlist = (await dirs).map((dir) => `- [${dir}](${dirpath}/${dir})`)
   // TODO: meta.title,datetime 読み込み
   const filelist = (await files).map(
-    (file) => `- [${file}](${dirpath}/${file.replace(/\.md$/, '')})`
+    (file) => `- [${file}](${dirpath}/${file.replace(/\.md$/, '.html')})`
   )
 
   const parentdir = `- [..](${dirpath}/..)`
