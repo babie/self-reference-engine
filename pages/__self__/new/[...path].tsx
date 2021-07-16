@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
-import Breadcrumbs from '../../components/Breadcrumbs'
-import { sanitize } from '../../lib/path'
+import Breadcrumbs from '../../../components/Breadcrumbs'
+import { sanitize } from '../../../lib/path'
 
 const New = () => {
   const router = useRouter()

@@ -24,7 +24,7 @@ const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ path }) => {
         links: [...acc.links, ' / ', link],
       }
     },
-    { href: '/tree:', links: [] }
+    { href: '/__self__/tree', links: [] }
   )
   return <>{links}</>
 }

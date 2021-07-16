@@ -2,7 +2,13 @@ import type { GetStaticPaths, GetStaticProps } from 'next'
 import Head from 'next/head'
 import npath from 'path'
 import fg from 'fast-glob'
-import { getFullpath, getFile, getIndex, isFile, isDir } from '../lib/markdown'
+import {
+  getFullpath,
+  getFile,
+  getIndex,
+  isFile,
+  isDir,
+} from '../../../lib/markdown'
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const cwd = npath.join(process.cwd(), 'public')

@@ -11,4 +11,12 @@ const withTM = require('next-transpile-modules')([
 
 module.exports = withTM({
   reactStrictMode: true,
+  async rewrites() {
+    return [
+      {
+        source: '/:path*',
+        destination: '/__self__/show/:path*',
+      },
+    ]
+  },
 })
