@@ -7,7 +7,11 @@ import { getIndex } from '../../../lib/markdown'
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const cwd = npath.join(process.cwd(), 'public')
-  const dirs = fg('**/*', { cwd, onlyDirectories: true })
+  const dirs = fg('**/*', {
+    cwd,
+    onlyDirectories: true,
+    followSymbolicLinks: false,
+  })
   const paths = [...(await dirs)].map((dir) => {
     const path = dir.split(npath.sep)
     return {

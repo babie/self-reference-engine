@@ -6,7 +6,11 @@ import { getFile } from '../../../lib/markdown'
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const cwd = npath.join(process.cwd(), 'public')
-  const files = fg('**/*.md', { cwd, onlyFiles: true })
+  const files = fg('**/*.md', {
+    cwd,
+    onlyFiles: true,
+    followSymbolicLinks: false,
+  })
   const paths = [...(await files)].map((file) => {
     const path = file.replace(/\.md$/, '.html').split(npath.sep)
     return {
