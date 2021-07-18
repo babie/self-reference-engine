@@ -30,7 +30,7 @@ export type GetIndex = (
 export const getIndex: GetIndex = async (base) => {
   const fullpath = getFullpath(base)
   const dirs = await fg('*', { cwd: fullpath, onlyDirectories: true })
-  const files = (await fg('*', { cwd: fullpath, onlyFiles: true })).map(
+  const files = (await fg('*.md', { cwd: fullpath, onlyFiles: true })).map(
     (file) => file.replace(/\.md$/, '.html')
   )
 
