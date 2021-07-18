@@ -46,14 +46,8 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
 }
 
 const Index: React.FC<Props> = ({ base, dirs, files }) => {
-  let parentDir: JSX.Element | undefined
-  if (base !== '/') {
-    parentDir = (
-      <li>
-        <Link href={npath.join(base, '..')}>..</Link>
-      </li>
-    )
-  }
+  let isRoot = base === '/' ? true : false
+
   return (
     <>
       <Head>
@@ -61,17 +55,33 @@ const Index: React.FC<Props> = ({ base, dirs, files }) => {
       </Head>
       <main>
         <ul>
-          {parentDir}
-          {dirs.map((dir) => (
-            <li key={dir}>
-              <Link href={npath.join(base, dir)}>{dir}</Link>
+          {isRoot ? undefined : (
+            <li>
+              <Link href={[base, '..'].join('/')}>..</Link>
             </li>
-          ))}
-          {files.map((file) => (
-            <li key={file}>
-              <Link href={npath.join(base, file)}>{file}</Link>
-            </li>
-          ))}
+          )}
+          {isRoot
+            ? dirs.map((dir) => (
+                <li key={dir}>
+                  <Link href={['', dir].join('/')}>{dir}</Link>
+                </li>
+              ))
+            : dirs.map((dir) => (
+                <li key={dir}>
+                  <Link href={[base, dir].join('/')}>{dir}</Link>
+                </li>
+              ))}
+          {isRoot
+            ? files.map((file) => (
+                <li key={file}>
+                  <Link href={['', file].join('/')}>{file}</Link>
+                </li>
+              ))
+            : files.map((file) => (
+                <li key={file}>
+                  <Link href={[base, file].join('/')}>{file}</Link>
+                </li>
+              ))}
         </ul>
       </main>
     </>
