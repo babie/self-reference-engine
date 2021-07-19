@@ -4,8 +4,8 @@ import { micromark } from 'micromark'
 import matter from 'gray-matter'
 import fg from 'fast-glob'
 
-export const getFullpath = (path: string): string => {
-  return npath.join(process.cwd(), 'public', path)
+export const getFullpath = (pathname: string): string => {
+  return npath.join(process.cwd(), 'public', pathname)
 }
 
 export type GetFile = (
@@ -30,9 +30,7 @@ export type GetIndex = (
 export const getIndex: GetIndex = async (base) => {
   const fullpath = getFullpath(base)
   const dirs = await fg('*', { cwd: fullpath, onlyDirectories: true })
-  const files = (await fg('*.md', { cwd: fullpath, onlyFiles: true })).map(
-    (file) => file.replace(/\.md$/, '.html')
-  )
+  const files = await fg('*.md', { cwd: fullpath, onlyFiles: true })
 
   return { base, dirs, files }
 }

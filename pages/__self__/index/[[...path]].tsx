@@ -35,18 +35,21 @@ type Props = {
 }
 
 export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
-  let pathname = '/'
-  if (params && params.path && typeof params.path !== 'string') {
-    pathname = params.path
-      .reduce<string[]>((acc, p) => [...acc, `/${p}`], [])
-      .join('')
+  if (params) {
+    let pathname = '/'
+    if (params.path && typeof params.path !== 'string') {
+      pathname = params.path
+        .reduce<string[]>((acc, p) => [...acc, `/${p}`], [])
+        .join('')
+    }
+    const props: Props = await getIndex(pathname)
+    return { props }
   }
-  const props: Props = await getIndex(pathname)
-  return { props }
+  return { notFound: true }
 }
 
 const Index: React.FC<Props> = ({ base, dirs, files }) => {
-  const isRoot = base === '/' ? true : false
+  const isRoot = base === '/'
 
   return (
     <>
@@ -60,28 +63,22 @@ const Index: React.FC<Props> = ({ base, dirs, files }) => {
               <Link href={[base, '..'].join('/')}>..</Link>
             </li>
           )}
-          {isRoot
-            ? dirs.map((dir) => (
-                <li key={dir}>
-                  <Link href={['', dir].join('/')}>{dir}</Link>
-                </li>
-              ))
-            : dirs.map((dir) => (
-                <li key={dir}>
-                  <Link href={[base, dir].join('/')}>{dir}</Link>
-                </li>
-              ))}
-          {isRoot
-            ? files.map((file) => (
-                <li key={file}>
-                  <Link href={['', file].join('/')}>{file}</Link>
-                </li>
-              ))
-            : files.map((file) => (
-                <li key={file}>
-                  <Link href={[base, file].join('/')}>{file}</Link>
-                </li>
-              ))}
+          {dirs.map((dir) => (
+            <li key={dir}>
+              <Link href={[isRoot ? '' : base, dir].join('/')}>{dir}</Link>
+            </li>
+          ))}
+          {files.map((file) => (
+            <li key={file}>
+              <Link
+                href={[isRoot ? '' : base, file.replace(/\.md$/, '.html')].join(
+                  '/'
+                )}
+              >
+                {file.replace(/\.md$/, '.html')}
+              </Link>
+            </li>
+          ))}
         </ul>
       </main>
     </>
