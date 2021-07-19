@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-undef,@typescript-eslint/no-var-requires
 const withTM = require('next-transpile-modules')([
   // for micromark
   'parse-entities',
@@ -9,6 +10,7 @@ const withTM = require('next-transpile-modules')([
   'micromark-util-html-tag-name',
 ])
 
+// eslint-disable-next-line no-undef
 module.exports = withTM({
   reactStrictMode: true,
   async rewrites() {

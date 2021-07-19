@@ -35,18 +35,14 @@ type Props = {
 }
 
 export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
-  if (params && typeof params.path !== 'string') {
-    let path: string
-    if (params.path) {
-      path = npath.sep + npath.join(...params.path)
-    } else {
-      // public root
-      path = npath.sep
-    }
-    const props: Props = await getIndex(path)
-    return { props }
+  let pathname = '/'
+  if (params && params.path && typeof params.path !== 'string') {
+    pathname = params.path
+      .reduce<string[]>((acc, p) => [...acc, `/${p}`], [])
+      .join('')
   }
-  return { notFound: true }
+  const props: Props = await getIndex(pathname)
+  return { props }
 }
 
 const Index: React.FC<Props> = ({ base, dirs, files }) => {
