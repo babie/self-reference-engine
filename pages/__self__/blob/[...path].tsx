@@ -1,4 +1,4 @@
-const Blob = () => {
+const Blob: React.FC = () => {
   return <div>Blob Blob</div>
 }
 

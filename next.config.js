@@ -14,6 +14,22 @@ module.exports = withTM({
   async rewrites() {
     return [
       {
+        source: '/\\:tree/:path*',
+        destination: '/__self__/tree/:path*',
+      },
+      {
+        source: '/\\:blob/:path*',
+        destination: '/__self__/blob/:path*',
+      },
+      {
+        source: '/\\:new/:path*',
+        destination: '/__self__/new/:path*',
+      },
+      {
+        source: '/\\:edit/:path*',
+        destination: '/__self__/edit/:path*',
+      },
+      {
         source: '/:path+.html',
         destination: '/__self__/show/:path+.html',
       },

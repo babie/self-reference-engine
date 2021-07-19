@@ -2,7 +2,7 @@ import { useRouter } from 'next/router'
 import Breadcrumbs from '../../../components/Breadcrumbs'
 import { sanitize } from '../../../lib/path'
 
-const New = () => {
+const New: React.FC = () => {
   const router = useRouter()
   const { path } = router.query
 

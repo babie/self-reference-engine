@@ -50,7 +50,7 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
 }
 
 const Index: React.FC<Props> = ({ base, dirs, files }) => {
-  let isRoot = base === '/' ? true : false
+  const isRoot = base === '/' ? true : false
 
   return (
     <>

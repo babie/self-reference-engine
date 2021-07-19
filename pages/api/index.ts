@@ -1,4 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const corsProxy = require('@isomorphic-git/cors-proxy/middleware.js')
 
 const options = {
@@ -6,7 +7,8 @@ const options = {
   insecure_origins: (process.env['PROXY_INSECURE_ORIGINS'] || '').split(','),
 }
 
-const handler = (req: NextApiRequest, res: NextApiResponse) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const handler = (req: NextApiRequest, res: NextApiResponse): any => {
   if (req.url) {
     const nreq = { ...req, url: req.url.replace('/api', '') }
     return corsProxy(options)(nreq, res)

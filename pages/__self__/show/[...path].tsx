@@ -28,7 +28,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 type Props = {
   meta: {
-    [key: string]: any
+    [key: string]: string
   }
   html: string
 }

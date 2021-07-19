@@ -1,4 +1,4 @@
-const Tree = () => {
+const Tree: React.FC = () => {
   return <div>Tree Tree</div>
 }
 

@@ -10,7 +10,7 @@ export const getFullpath = (path: string): string => {
 
 export type GetFile = (
   filepath: string
-) => Promise<{ meta: { [key: string]: any }; html: string }>
+) => Promise<{ meta: { [key: string]: string }; html: string }>
 
 export const getFile: GetFile = async (filepath) => {
   const fullpath = getFullpath(filepath)
