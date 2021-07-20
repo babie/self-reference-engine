@@ -29,48 +29,49 @@ export const getStaticPaths: GetStaticPaths = async () => {
 }
 
 type Props = {
-  base: string
+  path: string[]
   dirs: string[]
   files: string[]
 }
 
 export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
   if (params) {
-    let pathname = ''
+    let path: string[] = []
     if (params.path && typeof params.path !== 'string') {
-      pathname = params.path
-        .reduce<string[]>((acc, p) => [...acc, `/${p}`], [])
-        .join('')
+      path = params.path
     }
-    const props: Props = await getIndex(pathname)
+    const props: Props = await getIndex(path)
     return { props }
   }
   return { notFound: true }
 }
 
-const Index: React.FC<Props> = ({ base, dirs, files }) => {
-  const isRoot = base === ''
+const Index: React.FC<Props> = ({ path, dirs, files }) => {
+  const pathname = path
+    .reduce<string[]>((acc, p) => [...acc, `/${p}`], [])
+    .join('')
+  const isRoot = pathname === ''
 
   return (
     <>
       <Head>
-        <title>{base}</title>
+        <title>{pathname}</title>
       </Head>
       <main>
         <ul>
           {isRoot ? undefined : (
             <li>
-              <Link href={[base, '..'].join('/')}>..</Link>
+              <Link href={[pathname, '..'].join('/')}>..</Link>
             </li>
           )}
           {dirs.map((dir) => (
             <li key={dir}>
-              <Link href={[base, dir].join('/')}>{dir}</Link>
+              <Link href={[pathname, dir].join('/')}>{dir}</Link>
             </li>
           ))}
           {files.map((file) => (
             <li key={file}>
-              <Link href={[base, file.replace(/\.md$/, '.html')].join('/')}>
+              <Link href={[pathname, file.replace(/\.md$/, '.html')].join('/')}>
                 {file.replace(/\.md$/, '.html')}
               </Link>
             </li>

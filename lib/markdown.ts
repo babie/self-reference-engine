@@ -24,13 +24,13 @@ export const getFile: GetFile = async (filepath) => {
 }
 
 export type GetIndex = (
-  base: string
-) => Promise<{ base: string; dirs: string[]; files: string[] }>
+  path: string[]
+) => Promise<{ path: string[]; dirs: string[]; files: string[] }>
 
-export const getIndex: GetIndex = async (base) => {
-  const fullpath = getFullpath(base)
+export const getIndex: GetIndex = async (path) => {
+  const fullpath = npath.join(process.cwd(), 'public', ...path)
   const dirs = await fg('*', { cwd: fullpath, onlyDirectories: true })
   const files = await fg('*.md', { cwd: fullpath, onlyFiles: true })
 
-  return { base, dirs, files }
+  return { path, dirs, files }
 }
