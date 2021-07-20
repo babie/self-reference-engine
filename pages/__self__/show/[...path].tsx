@@ -35,8 +35,12 @@ type Props = {
 
 export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
   if (params && params.path && typeof params.path !== 'string') {
-    const path = npath.sep + params.path.join(npath.sep)
-    const props: Props = await getFile(path.replace(/\.html$/, '.md'))
+    const [rest, last] = [
+      params.path.slice(0, params.path.length - 1),
+      params.path.slice(-1)[0],
+    ]
+    const path = [...rest, last.replace(/\.html$/, '.md')]
+    const props: Props = await getFile(path)
     return { props }
   }
   return { notFound: true }
