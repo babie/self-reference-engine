@@ -36,7 +36,7 @@ type Props = {
 
 export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
   if (params) {
-    let pathname = '/'
+    let pathname = ''
     if (params.path && typeof params.path !== 'string') {
       pathname = params.path
         .reduce<string[]>((acc, p) => [...acc, `/${p}`], [])
@@ -49,7 +49,7 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
 }
 
 const Index: React.FC<Props> = ({ base, dirs, files }) => {
-  const isRoot = base === '/'
+  const isRoot = base === ''
 
   return (
     <>
@@ -65,16 +65,12 @@ const Index: React.FC<Props> = ({ base, dirs, files }) => {
           )}
           {dirs.map((dir) => (
             <li key={dir}>
-              <Link href={[isRoot ? '' : base, dir].join('/')}>{dir}</Link>
+              <Link href={[base, dir].join('/')}>{dir}</Link>
             </li>
           ))}
           {files.map((file) => (
             <li key={file}>
-              <Link
-                href={[isRoot ? '' : base, file.replace(/\.md$/, '.html')].join(
-                  '/'
-                )}
-              >
+              <Link href={[base, file.replace(/\.md$/, '.html')].join('/')}>
                 {file.replace(/\.md$/, '.html')}
               </Link>
             </li>
